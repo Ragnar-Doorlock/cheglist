@@ -1,9 +1,0 @@
-services:
-  postgres:
-    image: postgres:13.3
-    environment:
-      POSTGRES_DB: "cheglist"
-      POSTGRES_USER: "admin"
-      POSTGRES_PASSWORD: "admin1235"
-    ports:
-      - "5432:5432"
