@@ -7,6 +7,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { UserModule } from './user/user.module';
 import { DbConnectionModule } from './db/db-connection.module';
+import { ProjectModule } from './project/project.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { DbConnectionModule } from './db/db-connection.module';
             isGlobal: true,
         }),
         UserModule,
+        ProjectModule,
         DbConnectionModule,
   ],
   controllers: [AppController],

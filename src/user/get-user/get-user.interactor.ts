@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { UserRepository } from "../user.repository";
 import { GetUserResponseBuilder } from "./get-user.response-builder";
 import { GetUserResponseData } from "../response-types/get-user.type";
@@ -13,7 +13,7 @@ export class GetUserInteractor {
     async execute(id: string): Promise<GetUserResponseData | null> {
         const user = await this.repository.findById(id);
         if (!user) {
-            return null;
+            throw new NotFoundException('User was not found.');
         }
         return this.responseBuilder.build(user);
     }
