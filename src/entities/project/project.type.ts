@@ -1,5 +1,5 @@
 export type ProjectData = {
-    id: string;
+    id?: string;
     name: string;
     ownerId: string;
     createdAt?: Date;

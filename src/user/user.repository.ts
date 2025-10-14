@@ -3,33 +3,18 @@ import { Model } from "mongoose";
 import { UserDocument } from "../db/user.schema";
 import { User } from "src/entities/user/user";
 import { UserData } from "src/entities/user/user.type";
-import { userSchemaToResponse } from "./user.dataConverter";
+import { userSchemaToResponse } from "./user.data-converter";
 import { SearchUsersDto } from "./dto/search-users.dto";
 
 export class UserRepository {
     constructor(@InjectModel('User') private userModel: Model<UserDocument>) {}
-
-    /* async save(user: User): Promise<UserData> {
-        const doc = await this.userModel.findOneAndUpdate(
-            { _id: user.getId() },
-                {
-                    email: user.getEmail(),
-                    password: user.getPassword(),
-                    createdAt: user.getCreatedAt(),
-                    updatedAt: new Date(),
-                },
-            { new: true, upsert: true }
-        ).exec();
-
-        return userSchemaToResponse(doc);
-    } */
 
     async save(user: User): Promise<UserData> {
         if (!user.getId()) {
             const created = await this.userModel.create({
                 email: user.getEmail(),
                 password: user.getPassword(),
-                сreatedAt: new Date(),
+                createdAt: new Date(),
                 updatedAt: new Date(),
             });
             return userSchemaToResponse(created);

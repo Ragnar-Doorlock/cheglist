@@ -1,7 +1,7 @@
 import { ProjectData } from "./project.type";
 
 export class Project {
-    private id: string;
+    private id?: string;
     private name: string;
     private ownerId: string;
     private createdAt: Date;
@@ -15,7 +15,7 @@ export class Project {
         this.updatedAt = data.updatedAt || new Date();
     }
 
-    getId(): string {
+    getId(): string | undefined {
         return this.id;
     }
 

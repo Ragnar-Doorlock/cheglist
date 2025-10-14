@@ -48,7 +48,7 @@ export class UserService {
             return this.getUserInteractor.execute(id);
         } catch (error) {
             if (error instanceof NotFoundException) {
-                throw new NotFoundException(`User with id ${id} not found.`);
+                throw new NotFoundException(error.message);
             }
             throw new InternalServerErrorException();
         }
