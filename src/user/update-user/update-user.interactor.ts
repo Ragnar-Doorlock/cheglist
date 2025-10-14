@@ -38,7 +38,15 @@ export class UpdateUserInteractor {
             password: updateUserDto.password ? newHashedPassword : user.password,
         });
         await this.repository.save(updatedUser);
+
+        const updatedUserFromDb = await this.repository.findById(id);
+        if (!updatedUserFromDb) {
+            throw new NotFoundException('Updated user not found');
+        }
+        if (!updatedUserFromDb.id) {
+            throw new Error('Updated user ID is missing');
+        }
         
-        return this.responseBuilder.build(updatedUser);
+        return this.responseBuilder.build(updatedUserFromDb);
     }
 }

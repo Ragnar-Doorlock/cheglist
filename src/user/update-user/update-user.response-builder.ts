@@ -1,12 +1,13 @@
 import { Injectable } from "@nestjs/common";
 import { User } from "src/entities/user/user";
+import { UserData } from "src/entities/user/user.type";
 
 @Injectable()
 export class UpdateUserResponseBuilder {
-    async build(entity: User) {
+    async build(entity: UserData) {
         return {
-            id: entity.getId()!, // here we go again, i dunno how to fix TS in any other way
-            email: entity.getEmail(),
+            id: entity.id,
+            email: entity.email,
         }
     }
 }

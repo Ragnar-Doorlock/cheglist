@@ -6,34 +6,33 @@ import { ProjectData } from "src/entities/project/project.type";
 import { projectSchemaToResponse } from "./project.data-converter";
 import { SearchProjectsDto } from "./dto/search-projects.dto";
 import { FindOneProjectDto } from "./dto/find-one.dto";
+import { Injectable } from "@nestjs/common";
+import { ObjectId } from 'mongodb';
 
+@Injectable()
 export class ProjectRepository {
     constructor(@InjectModel('Project') private projectModel: Model<ProjectDocument>) {}
 
-    async save(project: Project): Promise<ProjectData> {
-        if (!project.getId()) {
-            const created = await this.projectModel.create({
+        async save(project: Project): Promise<ProjectData> {
+        const id = new ObjectId(project.getId());
+
+        const doc = await this.projectModel.findOneAndUpdate(
+            { _id: id },
+            {
+                 _id: id,
                 name: project.getName(),
                 ownerId: project.getOwnerId(),
-                createdAt: new Date(),
+                createdAt: project.getCreatedAt(),
                 updatedAt: new Date(),
-            })
-            return projectSchemaToResponse(created);
-        }
-
-        const updated = await this.projectModel.findOneAndUpdate(
-            { _id: project.getId() },
-                {
-                    name: project.getName(),
-                    updatedAt: new Date(),
-                },
-            { new: true },
+            },
+            { new: true, upsert: true, setDefaultsOnInsert: true },
         ).exec();
 
-        if (!updated) {
-            throw new Error(`Project with id ${project.getId()} not found`);
+        if (!doc) {
+            throw new Error('Failed to save user');
         }
-        return projectSchemaToResponse(updated);
+
+        return projectSchemaToResponse(doc);
     }
 
     async findById(id: string): Promise<ProjectData | null> {
