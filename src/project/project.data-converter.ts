@@ -22,7 +22,7 @@ export function projectEntityToSchema(project: Project): ProjectData {
     };
 }
 
-export function projectSchemaToResponse(doc: ProjectDocument) {
+export function projectSchemaToResponse(doc: ProjectDocument): ProjectData {
     return {
         id: doc._id.toString(),
         name: doc.name,

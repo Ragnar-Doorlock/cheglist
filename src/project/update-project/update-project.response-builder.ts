@@ -5,7 +5,7 @@ import { ProjectData } from "src/entities/project/project.type";
 export class UpdateProjectResponseBuilder {
     async build (project: ProjectData) {
         return {
-            id: project.id!,
+            id: project.id,
             name: project.name,
             ownerId: project.ownerId,
         };

@@ -1,21 +1,22 @@
-import { UserData } from "./user.type";
+import { NewUserData, UserData } from "./user.type";
+import { ObjectId } from 'mongodb';
 
 export class User {
-    private id?: string;
+    private id: string;
     private email: string;
     private password: string;
     private createdAt: Date;
     private updatedAt: Date;
 
-    constructor(data: UserData) {
-        this.id = data.id;
+    constructor(data: UserData | NewUserData) {
+        this.id = (data as UserData).id ?? new ObjectId().toString();
         this.email = data.email;
         this.password = data.password;
         this.createdAt = data.createdAt || new Date();
         this.updatedAt = data.updatedAt || new Date();
     }
 
-    getId(): string | undefined {
+    getId(): string {
         return this.id;
     }
 
@@ -35,7 +36,7 @@ export class User {
         return this.updatedAt;
     }
 
-    public static create(data: UserData): User {
+    public static create(data: UserData | NewUserData): User {
         return new User(data);
     }
 }

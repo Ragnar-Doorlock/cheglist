@@ -5,35 +5,33 @@ import { User } from "src/entities/user/user";
 import { UserData } from "src/entities/user/user.type";
 import { userSchemaToResponse } from "./user.data-converter";
 import { SearchUsersDto } from "./dto/search-users.dto";
+import { ObjectId } from 'mongodb';
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class UserRepository {
     constructor(@InjectModel('User') private userModel: Model<UserDocument>) {}
 
     async save(user: User): Promise<UserData> {
-        if (!user.getId()) {
-            const created = await this.userModel.create({
+        const id = new ObjectId(user.getId());
+
+        const doc = await this.userModel.findOneAndUpdate(
+            { _id: id },
+            {
+                 _id: id,
                 email: user.getEmail(),
                 password: user.getPassword(),
-                createdAt: new Date(),
+                createdAt: user.getCreatedAt(),
                 updatedAt: new Date(),
-            });
-            return userSchemaToResponse(created);
-        }
-
-        const updated = await this.userModel.findOneAndUpdate(
-            { _id: user.getId() },
-                {
-                    email: user.getEmail(),
-                    password: user.getPassword(),
-                    updatedAt: new Date(),
-                },
-            { new: true },
+            },
+            { new: true, upsert: true, setDefaultsOnInsert: true },
         ).exec();
 
-        if (!updated) {
-            throw new Error(`User with id ${user.getId()} not found`);
+        if (!doc) {
+            throw new Error('Failed to save user');
         }
-        return userSchemaToResponse(updated);
+
+        return userSchemaToResponse(doc);
     }
 
 

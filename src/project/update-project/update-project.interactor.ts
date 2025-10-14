@@ -31,6 +31,9 @@ export class UpdateProjectInteractor {
         if (!updatedProjectFromDb) {
             throw new NotFoundException('Updated project not found');
         }
+        if (!updatedProjectFromDb.id) {
+            throw new Error('Updated project ID is missing');
+        }
         return this.responseBuilder.build(updatedProjectFromDb);
     }
 }
