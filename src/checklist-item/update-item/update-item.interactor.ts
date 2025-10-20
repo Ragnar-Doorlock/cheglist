@@ -27,43 +27,73 @@ export class UpdateItemInteractor {
         }
         const project = await this.projectRepository.findById(checklist.projectId);
         if (!project) {
-            throw new Error('Prject was not found');
+            throw new Error('Project was not found');
         }
         if (project.ownerId !== requestUserId) {
             throw new ForbiddenException('You do not have permission to modify this checklist');
         }
-
-        const itemIndex = checklist.items?.findIndex(i => i.id === itemId);
-        if (itemIndex === undefined || itemIndex === -1) {
+        
+        const items = checklist.items ?? [];
+        const itemIndex = items.findIndex(i => i.id === itemId);
+        if (itemIndex === -1) {
             throw new NotFoundException(`Checklist item with id ${itemId} not found`);
         }
 
-        if (!checklist.items) {
-            throw new Error('Checklist items are missing');
-        }
-        const oldItem = checklist.items[itemIndex];
-        const updatedItem = ChecklistItem.create({
-            id: oldItem.id,
-            title: dto.title ?? oldItem.title,
-            order: dto.order ?? oldItem.order,
-            createdAt: oldItem.createdAt,
-            updatedAt: new Date(),
-        });
+        const oldItem = items[itemIndex];
 
-        const updatedItems = [...(checklist.items ?? [])];
-        updatedItems[itemIndex] = updatedItem.toData();
+        if (dto.order === undefined || dto.order === oldItem.order) {
+            const updatedItem = ChecklistItem.create({
+                ...oldItem,
+                title: dto.title ?? oldItem.title,
+                updatedAt: new Date(),
+            });
+
+            const updatedItems = [...items];
+            updatedItems[itemIndex] = updatedItem.toData();
+
+            const updatedChecklist = Checklist.create({
+                ...checklist,
+                items: updatedItems,
+            });
+
+            await this.checklistRepository.save(updatedChecklist);
+            const updatedChecklistFromDb = await this.checklistRepository.findById(checklistId);
+            if (!updatedChecklistFromDb) throw new Error('Updated checklist not found');
+
+            return this.responseBuilder.build(updatedChecklistFromDb);
+        }
+
+        const targetOrder = Math.max(1, Math.min(dto.order, items.length)); // не выходим за границы
+        const movingItem = ChecklistItem.create({
+            ...oldItem,
+            title: dto.title ?? oldItem.title,
+            order: targetOrder,
+            updatedAt: new Date(),
+        }).toData();
+
+        const remainingItems = items.filter(i => i.id !== itemId);
+
+        const reordered = [
+            ...remainingItems.slice(0, targetOrder - 1),
+            movingItem,
+            ...remainingItems.slice(targetOrder - 1),
+        ];
+
+        const normalizedItems = reordered.map((item, index) => ({
+            ...item,
+            order: index + 1,
+        }));
 
         const updatedChecklist = Checklist.create({
             ...checklist,
-            items: updatedItems,
+            items: normalizedItems,
         });
-        await this.checklistRepository.save(updatedChecklist);
 
+        await this.checklistRepository.save(updatedChecklist);
         const updatedChecklistFromDb = await this.checklistRepository.findById(checklistId);
         if (!updatedChecklistFromDb) {
             throw new Error('Updated checklist not found');
         }
-
         return this.responseBuilder.build(updatedChecklistFromDb);
     }
 }

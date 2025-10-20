@@ -32,12 +32,25 @@ export class AddItemInteractor {
             throw new ForbiddenException('You do not have permission to modify this checklist');
         }
 
+        const items = checklist.items ?? [];
+        const insertOrder =
+            createChecklistItemDto.order ??
+            (items.length > 0 ? items[items.length - 1].order + 1 : 1);
+        
+        const reorderedItems = items.map(item =>
+            item.order >= insertOrder
+                ? { ...item, order: item.order + 1 }
+                : item
+        );
+
         const newItem = ChecklistItem.create({
             title: createChecklistItemDto.title,
-            // TODO increment all other if inserted already added order???? <<<<<<<<<<<<<<<<<<<<<<
-            order: createChecklistItemDto.order ?? (checklist.items?.length ?? 0) + 1,
+            order: insertOrder,
         });
-        const updatedItems = [...(checklist.items ?? []), newItem.toData()];
+
+        const updatedItems = [...reorderedItems, newItem.toData()].sort(
+            (a, b) => a.order - b.order
+        );
 
         const updatedChecklist = Checklist.create({
             ...checklist,
