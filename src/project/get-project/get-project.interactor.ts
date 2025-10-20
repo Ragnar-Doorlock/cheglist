@@ -13,7 +13,7 @@ export class GetProjectInteractor {
     async execute(id: string): Promise<GetProjectResponseData | null> {
         const project = await this.repository.findById(id);
         if (!project) {
-            throw new NotFoundException('Company was not found.');
+            throw new NotFoundException('Project was not found.');
         }
         return this.responseBuilder.build(project);
     }

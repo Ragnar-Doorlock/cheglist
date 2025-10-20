@@ -1,7 +1,10 @@
-export type ChecklistItemData = {
-    id: string;
-    text: string;
-    children?: ChecklistItemData[];
+export type NewChecklistItemData = {
+    title: string;
+    order: number;
     createdAt?: Date;
     updatedAt?: Date;
+}
+
+export type ChecklistItemData = NewChecklistItemData & {
+    id: string;
 }

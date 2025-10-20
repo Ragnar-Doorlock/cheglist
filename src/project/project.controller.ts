@@ -27,7 +27,11 @@ export class ProjectController {
     }
 
     @Put(':id')
-    update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto, @TokenDataDecorator() tokenData: TokenData) {
+    update(
+        @Param('id') id: string,
+        @Body() updateProjectDto: UpdateProjectDto,
+        @TokenDataDecorator() tokenData: TokenData,
+    ) {
         const requestUserId = tokenData.id;
         return this.service.updateProject(id, updateProjectDto, requestUserId);
     }

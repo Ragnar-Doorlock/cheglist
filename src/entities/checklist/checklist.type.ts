@@ -1,11 +1,14 @@
 import { ChecklistItemData } from "../checklist-item/checklist-item.type";
 
-export type ChecklistData = {
-    id: string;
+export type NewChecklistData = {
     projectId: string;
-    title: string;
-    tags?: string[];
+    name: string;
+    tag?: string;
     items?: ChecklistItemData[];
     createdAt?: Date;
     updatedAt?: Date;
-}
+};
+
+export type ChecklistData = NewChecklistData & {
+    id: string;
+};

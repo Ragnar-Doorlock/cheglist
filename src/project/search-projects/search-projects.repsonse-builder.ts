@@ -5,7 +5,7 @@ import { ProjectData } from "src/entities/project/project.type";
 export class SearchProjectsResponseBuilder {
     async build(projects: ProjectData[]) {
         return projects.map((x) => ({
-            id: x.id!,
+            id: x.id,
             name: x.name,
             ownerId: x.ownerId,
         }));

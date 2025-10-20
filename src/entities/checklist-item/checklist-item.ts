@@ -1,16 +1,17 @@
-import { ChecklistItemData } from "./checklist-item.type";
+import { ObjectId } from 'mongodb';
+import { ChecklistItemData, NewChecklistItemData } from './checklist-item.type';
 
 export class ChecklistItem {
     private id: string;
-    private text: string;
-    private children: ChecklistItem[];
+    private title: string;
+    private order: number;
     private createdAt: Date;
     private updatedAt: Date;
 
-    constructor(data: ChecklistItemData) {
-        this.id = data.id;
-        this.text = data.text;
-        this.children = data.children?.map(child => new ChecklistItem(child)) ?? [];
+    constructor(data: ChecklistItemData | NewChecklistItemData) {
+        this.id = (data as ChecklistItemData).id ?? new ObjectId().toString();
+        this.title = data.title;
+        this.order = data.order;
         this.createdAt = data.createdAt || new Date();
         this.updatedAt = data.updatedAt || new Date();
     }
@@ -19,12 +20,12 @@ export class ChecklistItem {
         return this.id;
     }
 
-    getText(): string {
-        return this.text;
+    getTitle(): string {
+        return this.title;
     }
 
-    getChildren(): ChecklistItem[] { 
-        return this.children;
+    getOrder(): number {
+        return this.order;
     }
 
     getCreatedAt(): Date {
@@ -35,7 +36,17 @@ export class ChecklistItem {
         return this.updatedAt;
     }
 
-    public static create(data: ChecklistItemData): ChecklistItem {
-      return new ChecklistItem(data);
+    toData(): ChecklistItemData {
+        return {
+            id: this.id,
+            title: this.title,
+            order: this.order,
+            createdAt: this.createdAt,
+            updatedAt: this.updatedAt,
+        };
+    }
+
+    public static create(data: ChecklistItemData | NewChecklistItemData): ChecklistItem {
+        return new ChecklistItem(data);
     }
 }
