@@ -3,7 +3,7 @@ import { Model } from "mongoose";
 import { UserDocument } from "../db/user.schema";
 import { User } from "src/entities/user/user";
 import { UserData } from "src/entities/user/user.type";
-import { userSchemaToResponse } from "./user.data-converter";
+import { userEntityToSchema, userSchemaToResponse } from "./user.data-converter";
 import { SearchUsersDto } from "./dto/search-users.dto";
 import { ObjectId } from 'mongodb';
 import { Injectable } from "@nestjs/common";
@@ -13,15 +13,16 @@ export class UserRepository {
     constructor(@InjectModel('User') private userModel: Model<UserDocument>) {}
 
     async save(user: User): Promise<UserData> {
-        const id = new ObjectId(user.getId());
+        const generatedObjectId = new ObjectId(user.getId());
+        const data = userEntityToSchema(user);
 
         const doc = await this.userModel.findOneAndUpdate(
-            { _id: id },
+            { _id: generatedObjectId },
             {
-                 _id: id,
-                email: user.getEmail(),
-                password: user.getPassword(),
-                createdAt: user.getCreatedAt(),
+                 _id: generatedObjectId,
+                email: data.email,
+                password: data.password,
+                createdAt: data.createdAt,
                 updatedAt: new Date(),
             },
             { new: true, upsert: true, setDefaultsOnInsert: true },

@@ -6,8 +6,4 @@ export class CreateProjectDto {
     @MaxLength(50)
     @IsString()
     name: string;
-
-    /* @IsNotEmpty()
-    @IsString()
-    ownerId: string; */
 }

@@ -3,7 +3,7 @@ import { Model } from "mongoose";
 import { ProjectDocument } from "src/db/project.schema";
 import { Project } from "src/entities/project/project";
 import { ProjectData } from "src/entities/project/project.type";
-import { projectSchemaToResponse } from "./project.data-converter";
+import { projectEntityToSchema, projectSchemaToResponse } from "./project.data-converter";
 import { SearchProjectsDto } from "./dto/search-projects.dto";
 import { FindOneProjectDto } from "./dto/find-one.dto";
 import { Injectable } from "@nestjs/common";
@@ -13,16 +13,17 @@ import { ObjectId } from 'mongodb';
 export class ProjectRepository {
     constructor(@InjectModel('Project') private projectModel: Model<ProjectDocument>) {}
 
-        async save(project: Project): Promise<ProjectData> {
-        const id = new ObjectId(project.getId());
+    async save(project: Project): Promise<ProjectData> {
+        const generatedObjectId = new ObjectId(project.getId());
+        const data = projectEntityToSchema(project);
 
         const doc = await this.projectModel.findOneAndUpdate(
-            { _id: id },
+            { _id: generatedObjectId },
             {
-                 _id: id,
-                name: project.getName(),
-                ownerId: project.getOwnerId(),
-                createdAt: project.getCreatedAt(),
+                 _id: generatedObjectId,
+                name: data.name,
+                ownerId: data.ownerId,
+                createdAt: data.createdAt,
                 updatedAt: new Date(),
             },
             { new: true, upsert: true, setDefaultsOnInsert: true },

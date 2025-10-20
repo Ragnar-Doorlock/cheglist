@@ -35,7 +35,11 @@ export class UserController {
     }
 
     @Put(':id')
-    update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @TokenDataDecorator() tokenData: TokenData) {
+    update(
+        @Param('id') id: string,
+        @Body() updateUserDto: UpdateUserDto,
+        @TokenDataDecorator() tokenData: TokenData,
+    ) {
         const requestUserId = tokenData.id;
         return this.service.update(id, updateUserDto, requestUserId);
     }
