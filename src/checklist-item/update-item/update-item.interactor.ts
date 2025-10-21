@@ -45,6 +45,7 @@ export class UpdateItemInteractor {
             const updatedItem = ChecklistItem.create({
                 ...oldItem,
                 title: dto.title ?? oldItem.title,
+                tag: dto.tag ?? oldItem.tag,
                 updatedAt: new Date(),
             });
 
@@ -63,7 +64,7 @@ export class UpdateItemInteractor {
             return this.responseBuilder.build(updatedChecklistFromDb);
         }
 
-        const targetOrder = Math.max(1, Math.min(dto.order, items.length)); // не выходим за границы
+        const targetOrder = Math.max(1, Math.min(dto.order, items.length));
         const movingItem = ChecklistItem.create({
             ...oldItem,
             title: dto.title ?? oldItem.title,

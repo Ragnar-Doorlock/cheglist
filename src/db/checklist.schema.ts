@@ -4,6 +4,7 @@ export interface ChecklistItemSchema {
     _id: Types.ObjectId;
     title: string;
     order: number;
+    tag?: string;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -21,6 +22,7 @@ export interface ChecklistDocument extends Document {
 export const ChecklistItemSubSchema = new Schema<ChecklistItemSchema>({
   title: { type: String, required: true },
   order: { type: Number, required: true },
+  tag: { type: String },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

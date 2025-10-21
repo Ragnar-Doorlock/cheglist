@@ -5,6 +5,7 @@ export class ChecklistItem {
     private id: string;
     private title: string;
     private order: number;
+    private tag?: string;
     private createdAt: Date;
     private updatedAt: Date;
 
@@ -12,6 +13,7 @@ export class ChecklistItem {
         this.id = (data as ChecklistItemData).id ?? new ObjectId().toString();
         this.title = data.title;
         this.order = data.order;
+        this.tag = data.tag;
         this.createdAt = data.createdAt || new Date();
         this.updatedAt = data.updatedAt || new Date();
     }
@@ -28,6 +30,10 @@ export class ChecklistItem {
         return this.order;
     }
 
+    getTag(): string | undefined {
+        return this.tag;
+    }
+
     getCreatedAt(): Date {
         return this.createdAt;
     }
@@ -41,6 +47,7 @@ export class ChecklistItem {
             id: this.id,
             title: this.title,
             order: this.order,
+            tag: this.tag,
             createdAt: this.createdAt,
             updatedAt: this.updatedAt,
         };

@@ -8,6 +8,11 @@ export class CreateChecklistItemDto {
     title: string;
 
     @IsOptional()
+    @IsString()
+    @MaxLength(200)
+    tag?: string;
+
+    @IsOptional()
     @IsInt()
     @Min(1)
     order?: number;

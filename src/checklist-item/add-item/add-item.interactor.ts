@@ -45,6 +45,7 @@ export class AddItemInteractor {
 
         const newItem = ChecklistItem.create({
             title: createChecklistItemDto.title,
+            tag: createChecklistItemDto.tag,
             order: insertOrder,
         });
 
