@@ -20,7 +20,7 @@ export class ProjectService {
         private updateInteractor: UpdateProjectInteractor,
     ) {}
 
-    async createProject(createProjectDto: CreateProjectDto, requestUserId): Promise<CreateProjectResponseData> {
+    async createProject(createProjectDto: CreateProjectDto, requestUserId: string): Promise<CreateProjectResponseData> {
         try {
             return this.createInteractor.execute(createProjectDto, requestUserId);
         } catch (error) {
@@ -28,9 +28,9 @@ export class ProjectService {
         }
     }
 
-    async getProjectById(id: string): Promise<GetProjectResponseData | null> {
+    async getProjectById(id: string, requestUserId: string): Promise<GetProjectResponseData | null> {
         try {
-            return this.getInteractor.execute(id);
+            return this.getInteractor.execute(id, requestUserId);
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw new NotFoundException(error.message);

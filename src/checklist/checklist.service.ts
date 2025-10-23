@@ -2,7 +2,7 @@ import { ForbiddenException, Injectable, InternalServerErrorException, NotFoundE
 import { CreateChecklistInteractor } from "./create-checklist/create-checklist.interactor";
 import { CreateChecklistDto } from "./dto/create-checklist.dto";
 import { GetChecklistInteractor } from "./get-checklist/get-checklist.interactor";
-import { SearchChecklistsInteractor } from "./search-checklist/serach-checklists.interactor";
+import { SearchChecklistsInteractor } from "./search-checklist/searach-checklists.interactor";
 import { SearchChecklistsDto } from "./dto/search-checklist.dto";
 import { CreateChecklistResponseData } from "./response-types/create-checklist.type";
 import { GetChecklistResponseData } from "./response-types/get-checklist.type";
@@ -34,9 +34,13 @@ export class ChecklistService {
         }
     }
 
-    async getChecklistById(id: string): Promise<GetChecklistResponseData | null> {
+    async getChecklistById(
+        id: string,
+        requestUserId: string,
+        tag?:string
+    ): Promise<GetChecklistResponseData | null> {
         try {
-            return this.getInteractor.execute(id);
+            return this.getInteractor.execute(id, requestUserId, tag);
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw new NotFoundException(error.message);

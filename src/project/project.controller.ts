@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { ProjectService } from "./project.service";
 import { CreateProjectDto } from "./dto/create-project.dto";
 import { SearchProjectsDto } from "./dto/search-projects.dto";
@@ -11,8 +11,12 @@ export class ProjectController {
     constructor(private readonly service: ProjectService) {}
 
     @Get(':id')
-    get(@Param('id') id: string) {
-        return this.service.getProjectById(id);
+    get(
+        @Param('id') id: string,
+        @TokenDataDecorator() tokenData: TokenData,
+    ) {
+        const requestUserId = tokenData.id;
+        return this.service.getProjectById(id, requestUserId);
     }
 
     @Post('create')

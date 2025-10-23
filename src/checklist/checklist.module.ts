@@ -10,7 +10,7 @@ import { CreateChecklistInteractor } from "./create-checklist/create-checklist.i
 import { CreateChecklistResponseBuilder } from "./create-checklist/create-checklist.response-builder";
 import { UpdateChecklistInteractor } from "./update-checklist/update-checklist.interactor";
 import { UpdateChecklistResponseBuilder } from "./update-checklist/update-checklist.reponse-builder";
-import { SearchChecklistsInteractor } from "./search-checklist/serach-checklists.interactor";
+import { SearchChecklistsInteractor } from "./search-checklist/searach-checklists.interactor";
 import { SearchChecklistsResponseBuilder } from "./search-checklist/search-checklists.response-builder";
 import { ProjectGatewayModule } from "src/project/project.gateway-module";
 

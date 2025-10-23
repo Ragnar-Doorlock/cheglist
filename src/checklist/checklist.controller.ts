@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { ChecklistService } from "./checklist.service";
 import { TokenDataDecorator } from "src/token-data.decorator";
 import type { TokenData } from "src/token-data.type";
@@ -11,8 +11,13 @@ export class ChecklistController {
     constructor(private readonly service: ChecklistService) {}
 
     @Get(':id')
-    get(@Param('id') id: string) {
-        return this.service.getChecklistById(id);
+    get(
+        @Param('id') id: string,
+        @TokenDataDecorator() tokenData: TokenData,
+        @Query('tag') tag?: string,
+    ) {
+        const requestUserId = tokenData.id;
+        return this.service.getChecklistById(id, requestUserId, tag);
     }
 
     @Post('create')
