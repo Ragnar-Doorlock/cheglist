@@ -6,6 +6,7 @@ import { ObjectId} from 'mongodb';
 export class Run {
     private id: string;
     private checklistId: string;
+    private order: number;
     private tester?: string;
     private status: RunStatus;
     private runItems: RunItem[];
@@ -17,6 +18,7 @@ export class Run {
     constructor(data: RunData | NewRunData) {
         this.id = (data as RunData).id ?? new ObjectId().toString();
         this.checklistId = data.checklistId;
+        this.order = data.order;
         this.tester = data.tester;
         this.status = data.status ?? runStatus.IN_PROGRESS;
         this.runItems = data.runItems?.map(runItem => new RunItem(runItem)) ?? [];
@@ -32,6 +34,10 @@ export class Run {
 
     getChecklistId(): string {
         return this.checklistId;
+    }
+
+    getOrder(): number {
+        return this.order;
     }
 
     getTester(): string | undefined {

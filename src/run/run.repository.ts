@@ -23,6 +23,15 @@ export class RunRepository {
         return docs.map(runSchemaToResponse);
     }
 
+    async findLastByChecklistId(checklistId: string): Promise<RunData | null> {
+        const doc = await this.runModel
+            .findOne({ checklistId })
+            .sort({ order: -1 })
+            .exec();
+
+        return doc ? runSchemaToResponse(doc) : null;
+    }
+
     async save(run: Run): Promise<RunData> {
         const data = runEntityToSchema(run);
 

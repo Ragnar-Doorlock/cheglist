@@ -5,8 +5,9 @@ import { runItemStatus, RunItemStatus } from 'src/run-item/runItemStatus';
 export class RunItem {
     private id: string;
     private checklistItemId: string;
-    private title: string;
+    title: string;
     private tag?: string;
+    private order: number;
     private status: RunItemStatus;
     private comment?: string;
     private createdAt: Date;
@@ -15,8 +16,9 @@ export class RunItem {
     constructor(data: RunItemData | NewRunItemData) {
         this.id = (data as RunItemData).id ?? new ObjectId().toString();
         this.checklistItemId = data.checklistItemId;
-        this.title = data.title;
         this.tag = data.tag;
+        this.title = data.title;
+        this.order = data.order;
         this.status = data.status ?? runItemStatus.NOT_RUN;
         this.comment = data.comment;
         this.createdAt = data.createdAt || new Date();
@@ -31,12 +33,16 @@ export class RunItem {
         return this.checklistItemId;
     }
 
+    getTag(): string | undefined {
+        return this.tag;
+    }
+
     getTitle(): string {
         return this.title;
     }
 
-    getTag(): string | undefined {
-        return this.tag;
+    getOrder(): number {
+        return this.order;
     }
 
     getStatus(): RunItemStatus {
@@ -59,8 +65,9 @@ export class RunItem {
         return {
             id: this.id,
             checklistItemId: this.checklistItemId,
-            title: this.title,
             tag: this.tag,
+            order: this.order,
+            title: this.title,
             status: this.status,
             comment: this.comment,
             createdAt: this.createdAt,

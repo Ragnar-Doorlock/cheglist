@@ -8,6 +8,7 @@ export function runSchemaToEntity(doc: RunDocument): Run {
     const data: RunData = {
         id: doc._id.toString(),
         checklistId: doc.checklistId.toString(),
+        order: doc.order,
         tester: doc.tester,
         status: doc.status as RunStatus,
         build: doc.build,
@@ -17,9 +18,10 @@ export function runSchemaToEntity(doc: RunDocument): Run {
         runItems: doc.runItems.map(item => ({
             id: item._id.toString(),
             checklistItemId: item.checklistItemId.toString(),
-            title: item.title,
             tag: item.tag,
+            title: item.title,
             status: item.status,
+            order: item.order,
             comment: item.comment,
             createdAt: item.createdAt,
             updatedAt: item.updatedAt,
@@ -34,6 +36,7 @@ export function runEntityToSchema(entity: Run): Record<string, unknown> {
         _id: entity.getId(),
         checklistId: entity.getChecklistId(),
         tester: entity.getTester(),
+        order: entity.getOrder(),
         status: entity.getStatus(),
         build: entity.getBuild(),
         startedAt: entity.getStartedAt(),
@@ -42,9 +45,10 @@ export function runEntityToSchema(entity: Run): Record<string, unknown> {
         runItems: entity.getRunItems().map((item: RunItem) => ({
             _id: item.getId(),
             checklistItemId: item.getChecklistItemId(),
-            title: item.getTitle(),
             tag: item.getTag(),
+            title: item.getTitle(),
             status: item.getStatus(),
+            order: item.getOrder(),
             comment: item.getComment(),
             createdAt: item.getCreatedAt(),
             updatedAt: item.getUpdatedAt(),
@@ -56,6 +60,7 @@ export function runSchemaToResponse(doc: RunDocument) {
     return {
         id: doc._id.toString(),
         checklistId: doc.checklistId.toString(),
+        order: doc.order,
         tester: doc.tester,
         status: doc.status as RunStatus,
         build: doc.build,
@@ -65,8 +70,9 @@ export function runSchemaToResponse(doc: RunDocument) {
         runItems: doc.runItems.map(item => ({
             id: item._id.toString(),
             checklistItemId: item.checklistItemId.toString(),
-            title: item.title,
             tag: item.tag,
+            title: item.title,
+            order: item.order,
             status: item.status,
             comment: item.comment,
         })),

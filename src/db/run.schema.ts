@@ -7,6 +7,7 @@ export interface RunItemSchema {
     title: string;
     tag?: string;
     status: RunItemStatus;
+    order: number;
     comment?: string;
     createdAt: Date;
     updatedAt: Date;
@@ -15,6 +16,7 @@ export interface RunItemSchema {
 export interface RunDocument extends Document {
     _id: Types.ObjectId;
     checklistId: Types.ObjectId;
+    order: number;
     tester?: string;
     status: string;
     runItems: RunItemSchema[];
@@ -29,6 +31,7 @@ export const RunItemSubSchema = new Schema<RunItemSchema>({
     title: { type: String, required: true },
     tag: { type: String },
     status: { type: String, required: true, default: runItemStatus.NOT_RUN },
+    order: {type: Number, required: true},
     comment: { type: String },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
@@ -36,6 +39,7 @@ export const RunItemSubSchema = new Schema<RunItemSchema>({
 
 export const RunSchema = new Schema<RunDocument>({
     checklistId: { type: Schema.Types.ObjectId, ref: 'Checklist', required: true },
+    order: { type: Number, required: true },
     tester: { type: String },
     status: { type: String, required: true, default: 'in_progress' },
     runItems: { type: [RunItemSubSchema], default: [] },

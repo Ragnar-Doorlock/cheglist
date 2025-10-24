@@ -3,6 +3,7 @@ import { RunStatus } from 'src/run/runStatus';
 
 export type NewRunData = {
     checklistId: string;
+    order: number;
     tester?: string;
     status: RunStatus;
     runItems: RunItemData[];
