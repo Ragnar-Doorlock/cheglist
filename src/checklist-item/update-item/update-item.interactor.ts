@@ -79,7 +79,7 @@ export class UpdateItemInteractor {
             movingItem,
             ...remainingItems.slice(targetOrder - 1),
         ];
-
+        // TODO reorder runItems too. Only for IN_PROGRESS??? -> i think like not only?
         const normalizedItems = reordered.map((item, index) => ({
             ...item,
             order: index + 1,

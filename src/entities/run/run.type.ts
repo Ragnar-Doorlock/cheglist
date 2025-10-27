@@ -8,12 +8,11 @@ export type NewRunData = {
     status: RunStatus;
     runItems: RunItemData[];
     build?: string;
-    startedAt?: Date;
+    startedAt: Date;
     createdAt?: Date;
     updatedAt?: Date;
 };
 
 export type RunData = NewRunData & {
     id: string;
-    startedAt: Date;
 };

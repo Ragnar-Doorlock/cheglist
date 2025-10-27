@@ -43,7 +43,7 @@ export function checklistEntityToSchema(entity: Checklist): Record<string, unkno
     };
 }
 
-export function checklistSchemaToResponse(doc: ChecklistDocument) {
+export function checklistSchemaToResponse(doc: ChecklistDocument): ChecklistData {
     return {
         id: doc._id.toString(),
         name: doc.name,

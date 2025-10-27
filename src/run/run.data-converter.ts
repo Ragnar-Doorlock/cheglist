@@ -56,7 +56,7 @@ export function runEntityToSchema(entity: Run): Record<string, unknown> {
     };
 }
 
-export function runSchemaToResponse(doc: RunDocument) {
+export function runSchemaToResponse(doc: RunDocument): RunData {
     return {
         id: doc._id.toString(),
         checklistId: doc.checklistId.toString(),
@@ -75,6 +75,8 @@ export function runSchemaToResponse(doc: RunDocument) {
             order: item.order,
             status: item.status,
             comment: item.comment,
+            createdAt: item.createdAt,
+            updatedAt: item.updatedAt,
         })),
     };
 }

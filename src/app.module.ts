@@ -10,6 +10,8 @@ import { DbConnectionModule } from './db/db-connection.module';
 import { ProjectModule } from './project/project.module';
 import { ChecklistModule } from './checklist/checklist.module';
 import { ChecklistItemModule } from './checklist-item/checklist-item.module';
+import { RunModule } from './run/run.module';
+import { RunItemModule } from './run-item/run-item.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { ChecklistItemModule } from './checklist-item/checklist-item.module';
         ProjectModule,
         ChecklistModule,
         ChecklistItemModule,
+        RunModule,
+        RunItemModule,
         DbConnectionModule,
   ],
   controllers: [AppController],
