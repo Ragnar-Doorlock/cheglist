@@ -4,6 +4,8 @@ import { TokenDataDecorator } from "src/token-data.decorator";
 import type { TokenData } from "src/token-data.type";
 import { CreateRunDto } from "./dto/create-run.dto";
 import { UpdateRunDto } from "./dto/update-run.dto";
+import { SyncDto } from "./dto/sync-run.dto";
+import { Public } from "src/public.decorator";
 
 @Controller('runs')
 export class RunController {
@@ -44,5 +46,13 @@ export class RunController {
     ) {
         const requestUserId = tokenData.id;
         return this.service.update(id, updateRunDto, requestUserId);
+    }
+
+    @Public() // TODO: may be add auth too...
+    @Post('sync')
+    sync(
+        @Body() syncDto: SyncDto,
+    ) {
+        this.service.syncAllRunsWithChecklist(syncDto.id);
     }
 }

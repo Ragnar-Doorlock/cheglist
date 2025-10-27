@@ -15,7 +15,12 @@ import { SearchChecklistsResponseBuilder } from "./search-checklist/search-check
 import { ProjectGatewayModule } from "src/project/project.gateway-module";
 
 @Module({
-    imports: [ConfigModule, AuthModule, ChecklistGatewayModule, ProjectGatewayModule],
+    imports: [
+        ConfigModule,
+        AuthModule,
+        ChecklistGatewayModule,
+        ProjectGatewayModule,
+    ],
     controllers: [ChecklistController],
     providers: [
         ChecklistService,

@@ -5,6 +5,7 @@ import { Checklist } from "src/entities/checklist/checklist";
 export class CreateChecklistResponseBuilder {
     async build(checklist: Checklist) {
         return {
+            //TODO: return ID
             name: checklist.getName(),
             projectId: checklist.getProjectId(),
             items: checklist.getItems(),
