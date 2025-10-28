@@ -6,6 +6,7 @@ export class Checklist {
     private id: string;
     private projectId: string;
     // private order: number; TODO maybe will be needed
+    private description?: string;
     private name: string;
     private tag?: string;
     private items: ChecklistItem[];
@@ -16,6 +17,7 @@ export class Checklist {
         this.id = (data as ChecklistData).id ?? new ObjectId().toString();
         this.projectId = data.projectId;
         this.name = data.name;
+        this.description = data.description;
         this.items = data.items?.map(item => new ChecklistItem(item)) ?? [];
         this.tag = data.tag;
         this.createdAt = data.createdAt || new Date();
@@ -32,6 +34,10 @@ export class Checklist {
 
     getName(): string {
         return this.name;
+    }
+
+    getDescription(): string | undefined {
+        return this.description;
     }
 
     getItems(): ChecklistItem[] {

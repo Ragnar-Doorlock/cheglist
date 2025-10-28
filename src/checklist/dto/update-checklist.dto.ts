@@ -9,5 +9,9 @@ export class UpdateChecklistDto {
 
     @IsString()
     @IsOptional()
+    description?: string;
+
+    @IsString()
+    @IsOptional()
     tag?: string;
 }

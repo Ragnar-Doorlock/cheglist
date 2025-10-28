@@ -35,6 +35,7 @@ export class UpdateChecklistInteractor {
             id: checklist.id,
             name: updateChecklistDto.name ?? checklist.name,
             projectId: checklist.projectId,
+            description: updateChecklistDto.description ?? checklist.description,
             tag: updateChecklistDto.tag ?? checklist.tag,
             items: checklist.items,
         });

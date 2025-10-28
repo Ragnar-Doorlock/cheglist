@@ -12,6 +12,7 @@ export interface ChecklistItemSchema {
 export interface ChecklistDocument extends Document {
   _id: Types.ObjectId;
   name: string;
+  description?: string;
   tag?: string;
   projectId: Types.ObjectId;
   items: ChecklistItemSchema[];
@@ -30,6 +31,7 @@ export const ChecklistItemSubSchema = new Schema<ChecklistItemSchema>({
 export const ChecklistSchema = new Schema<ChecklistDocument>({
   name: { type: String, required: true },
   tag: { type: String },
+  description: { type: String },
   projectId: { type: Schema.Types.ObjectId, ref: 'Project', required: true },
   items: { type: [ChecklistItemSubSchema], default: [] },
   createdAt: { type: Date, default: Date.now },

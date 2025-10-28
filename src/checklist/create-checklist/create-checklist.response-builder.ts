@@ -10,6 +10,7 @@ export class CreateChecklistResponseBuilder {
             projectId: checklist.getProjectId(),
             items: checklist.getItems(),
             tag: checklist.getTag(),
+            description: checklist.getDescription(),
         }
     }
 }

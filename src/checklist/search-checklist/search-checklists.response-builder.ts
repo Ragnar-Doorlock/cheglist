@@ -8,6 +8,7 @@ export class SearchChecklistsResponseBuilder {
             id: x.id,
             name: x.name,
             projectId: x.projectId,
+            description: x.description,
             tag: x.tag,
         }));
     }

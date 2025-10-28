@@ -77,5 +77,7 @@ export class UpdateRunItemInteractor {
             throw new Error('Updated run not found');
         }
         return this.responseBuilder.build(updatedRunFromDb);
+
+        //TODO Change run status to 'completed' if there are no 'not run' statuses
     }
 }

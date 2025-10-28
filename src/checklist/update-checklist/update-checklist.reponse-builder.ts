@@ -9,6 +9,7 @@ export class UpdateChecklistResponseBuilder {
             name: checklist.name,
             projectId: checklist.projectId,
             tag: checklist.tag,
+            description: checklist.description,
             items: checklist.items,
         };
     }
