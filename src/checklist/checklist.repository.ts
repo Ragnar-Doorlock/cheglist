@@ -79,8 +79,16 @@ export class ChecklistRepository {
         return checklistSchemaToResponse(updatedDoc);
     }
 
-    // TODO
-    /* async deleteById(id: string): Promise<void> {
+    async deleteById(id: string): Promise<void> {
         await this.checklistModel.findByIdAndDelete(id).exec();
-    } */
+    }
+
+    async deleteManyByProjectId(projectId: string): Promise<void> {
+        await this.checklistModel.deleteMany({ projectId }).exec();
+    }
+
+    async findIdsByProjectId(projectId: string): Promise<string[]> {
+        const docs = await this.checklistModel.find({ projectId }).select('_id').exec();
+        return docs.map(doc => doc._id.toString());
+    }
 }

@@ -10,6 +10,7 @@ import { SearchChecklistsResponseData } from "./response-types/search-checklists
 import { UpdateChecklistDto } from "./dto/update-checklist.dto";
 import { UpdateChecklistInteractor } from "./update-checklist/update-checklist.interactor";
 import { UpdateChecklistResponseData } from "./response-types/update-checklist.type";
+import { DeleteChecklistInteractor } from "./delete-checklist/delete-checklist.interactor";
 
 @Injectable()
 export class ChecklistService {
@@ -18,6 +19,7 @@ export class ChecklistService {
         private getInteractor: GetChecklistInteractor,
         private searchInteractor: SearchChecklistsInteractor,
         private updateInteractor: UpdateChecklistInteractor,
+        private deleteInteractor: DeleteChecklistInteractor,
     ) {}
 
     async createChecklist(
@@ -75,7 +77,17 @@ export class ChecklistService {
         }
     }
 
-    async deleteChecklist() {
-        //TODO
+    async deleteChecklist(id: string, requestUserId: string): Promise<void> {
+        try {
+            return this.deleteInteractor.execute(id, requestUserId);
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw new NotFoundException(error.message);
+            }
+            if (error instanceof ForbiddenException) {
+                throw new ForbiddenException(error.message);
+            }
+            throw new InternalServerErrorException();
+        }
     }
 }

@@ -5,7 +5,7 @@ import { Checklist } from "src/entities/checklist/checklist";
 export class CreateChecklistResponseBuilder {
     async build(checklist: Checklist) {
         return {
-            //TODO: return ID
+            //TODO: return ID?? db can have multiple checklists with the same name already
             name: checklist.getName(),
             projectId: checklist.getProjectId(),
             items: checklist.getItems(),

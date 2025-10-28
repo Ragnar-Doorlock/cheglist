@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { RunService } from "./run.service";
 import { TokenDataDecorator } from "src/token-data.decorator";
 import type { TokenData } from "src/token-data.type";
@@ -53,6 +53,15 @@ export class RunController {
     sync(
         @Body() syncDto: SyncDto,
     ) {
-        this.service.syncAllRunsWithChecklist(syncDto.id);
+        return this.service.syncAllRunsWithChecklist(syncDto.id);
+    }
+
+    @Delete(':id')
+    delete(
+        @Param('id') id: string,
+        @TokenDataDecorator() tokenData: TokenData,
+    ) {
+        const requestUserId = tokenData.id;
+        return this.service.delete(id, requestUserId);
     }
 }

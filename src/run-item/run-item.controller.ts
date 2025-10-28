@@ -25,6 +25,4 @@ export class RunItemController {
             requestUserId,
         );
     }
-
-    //TODO add run item for started run if new checks were added? or manage it in checklists cocktroller?
 }

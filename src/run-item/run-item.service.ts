@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { BadRequestException, ForbiddenException, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { UpdateRunItemInteractor } from "./update-run-item/update-run-item.interactor";
 import { UpdateRunItemDto } from "./dto/update-run-item.dto";
 
@@ -22,6 +22,9 @@ export class RunItemService {
             }
             if (error instanceof ForbiddenException) {
                 throw new ForbiddenException(error.message);
+            }
+            if (error instanceof BadRequestException) {
+                throw new BadRequestException(error.message);
             }
             throw new InternalServerErrorException();
         }

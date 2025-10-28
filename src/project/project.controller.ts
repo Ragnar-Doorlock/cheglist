@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { ProjectService } from "./project.service";
 import { CreateProjectDto } from "./dto/create-project.dto";
 import { SearchProjectsDto } from "./dto/search-projects.dto";
@@ -40,5 +40,12 @@ export class ProjectController {
         return this.service.updateProject(id, updateProjectDto, requestUserId);
     }
 
-    // @Delete(':id') TODO
+    @Delete(':id')
+    delete(
+        @Param('id') id: string,
+        @TokenDataDecorator() tokenData: TokenData,
+    ) {
+        const requestUserId = tokenData.id;
+        return this.service.deleteProject(id, requestUserId);
+    }
 }

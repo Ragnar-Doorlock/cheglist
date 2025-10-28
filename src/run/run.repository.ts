@@ -64,4 +64,17 @@ export class RunRepository {
     async deleteById(id: string): Promise<void> {
         await this.runModel.findByIdAndDelete(id).exec();
     }
+
+    async deleteManyByChecklistIds(checklistIds: string[]): Promise<void> {
+        await this.runModel.deleteMany({ checklistId: { $in: checklistIds } }).exec();
+    }
+
+    async deleteManyByProjectId(projectId: string): Promise<void> {
+        const checklistIds = await this.runModel
+            .distinct('checklistId', { projectId })
+            .exec();
+        if (checklistIds.length > 0) {
+            await this.runModel.deleteMany({ checklistId: { $in: checklistIds } }).exec();
+        }
+    }
 }

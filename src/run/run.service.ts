@@ -9,6 +9,7 @@ import { UpdateRunInteractor } from "./update-run/update-run.interactor";
 import { UpdateRunResponseData } from "./response-types/update-run.type";
 import { UpdateRunDto } from "./dto/update-run.dto";
 import { SyncRunWithChecklistInteractor } from "./sync-run-with-checklist/sync-run-with-checklist.interactor";
+import { DeleteRunInteractor } from "./delete-run/delete-run.interactor";
 
 @Injectable()
 export class RunService {
@@ -18,6 +19,7 @@ export class RunService {
         private createInteractor: CreateRunInteractor,
         private updateInteractor: UpdateRunInteractor,
         private syncInteractor: SyncRunWithChecklistInteractor,
+        private deleteInteractor: DeleteRunInteractor,
     ) {}
 
     async create(
@@ -95,6 +97,20 @@ export class RunService {
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw new NotFoundException(error.message);
+            }
+            throw new InternalServerErrorException();
+        }
+    }
+
+    async delete(id: string, requestUserId: string): Promise<void> {
+        try {
+            return this.deleteInteractor.execute(id, requestUserId);
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw new NotFoundException(error.message);
+            }
+            if (error instanceof ForbiddenException) {
+                throw new ForbiddenException(error.message);
             }
             throw new InternalServerErrorException();
         }

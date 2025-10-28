@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 import { ChecklistRepository } from "src/checklist/checklist.repository";
 import { ProjectRepository } from "src/project/project.repository";
 import { RunRepository } from "src/run/run.repository";
@@ -7,6 +7,7 @@ import { UpdateRunItemResponseData } from "../response-types/update-run-item.typ
 import { RunItem } from "src/entities/run-item-result/run-item";
 import { Run } from "src/entities/run/run";
 import { UpdateRunItemResponseBuilder } from "./update-run-item.response-builder";
+import { runStatus } from "src/run/runStatus";
 
 @Injectable()
 export class UpdateRunItemInteractor {
@@ -37,6 +38,10 @@ export class UpdateRunItemInteractor {
         }
         if (project.ownerId !== requestUserId) {
             throw new ForbiddenException('You do not have permission to edit this run');
+        }
+
+        if (run.status !== runStatus.IN_PROGRESS) {
+            throw new BadRequestException('Run is completed');
         }
 
         const runItems = run.runItems;

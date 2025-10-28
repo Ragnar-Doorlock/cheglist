@@ -13,6 +13,8 @@ import { UpdateChecklistResponseBuilder } from "./update-checklist/update-checkl
 import { SearchChecklistsInteractor } from "./search-checklist/searach-checklists.interactor";
 import { SearchChecklistsResponseBuilder } from "./search-checklist/search-checklists.response-builder";
 import { ProjectGatewayModule } from "src/project/project.gateway-module";
+import { DeleteChecklistInteractor } from "./delete-checklist/delete-checklist.interactor";
+import { RunGatewayModule } from "src/run/run.gateway-module";
 
 @Module({
     imports: [
@@ -20,6 +22,7 @@ import { ProjectGatewayModule } from "src/project/project.gateway-module";
         AuthModule,
         ChecklistGatewayModule,
         ProjectGatewayModule,
+        RunGatewayModule,
     ],
     controllers: [ChecklistController],
     providers: [
@@ -32,6 +35,7 @@ import { ProjectGatewayModule } from "src/project/project.gateway-module";
         UpdateChecklistResponseBuilder,
         SearchChecklistsInteractor,
         SearchChecklistsResponseBuilder,
+        DeleteChecklistInteractor,
     ],
 })
 export class ChecklistModule {}

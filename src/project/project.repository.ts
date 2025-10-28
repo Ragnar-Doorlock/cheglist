@@ -78,30 +78,7 @@ export class ProjectRepository {
         return doc.map(projectSchemaToResponse);
     }
 
-    //TODO: implement delete with transaction
-    /* async delete(projectId: string): Promise<ProjectData | null> {
-        const session = await this.projectModel.startSession();
-        session.startTransaction();
-
-        try {
-            const project = await this.projectModel.findById(projectId).session(session).exec();
-            if (!project) {
-                await session.abortTransaction();
-                session.endSession();
-                return null;
-            }
-
-            await this.checklistModel.deleteMany({ projectId }).session(session).exec();
-            await this.projectModel.deleteOne({ _id: projectId }).session(session).exec();
-
-            await session.commitTransaction();
-            session.endSession();
-
-            return projectSchemaToResponse(project);
-        } catch (error) {
-            await session.abortTransaction();
-            session.endSession();
-            throw error;
-        }
-    } */
+    async deleteById(id: string): Promise<void> {
+        await this.projectModel.findByIdAndDelete(id).exec();
+    }
 }
