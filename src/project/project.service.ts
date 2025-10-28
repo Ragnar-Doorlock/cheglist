@@ -10,6 +10,7 @@ import { SearchProjectsInteractor } from "./search-projects/search-projects.inte
 import { UpdateProjectDto } from "./dto/update-project.dto";
 import { UpdateProjectInteractor } from "./update-project/update-project.interactor";
 import { UpdateProjectResponseData } from "./response-types/update-project.type";
+import { DeleteProjectInteractor } from "./delete-project/delete-project.interactor";
 
 @Injectable()
 export class ProjectService {
@@ -18,9 +19,10 @@ export class ProjectService {
         private getInteractor: GetProjectInteractor,
         private searchInteractor: SearchProjectsInteractor,
         private updateInteractor: UpdateProjectInteractor,
+        private deleteInteractor: DeleteProjectInteractor,
     ) {}
 
-    async createProject(createProjectDto: CreateProjectDto, requestUserId): Promise<CreateProjectResponseData> {
+    async createProject(createProjectDto: CreateProjectDto, requestUserId: string): Promise<CreateProjectResponseData> {
         try {
             return this.createInteractor.execute(createProjectDto, requestUserId);
         } catch (error) {
@@ -28,9 +30,9 @@ export class ProjectService {
         }
     }
 
-    async getProjectById(id: string): Promise<GetProjectResponseData | null> {
+    async getProjectById(id: string, requestUserId: string): Promise<GetProjectResponseData | null> {
         try {
-            return this.getInteractor.execute(id);
+            return this.getInteractor.execute(id, requestUserId);
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw new NotFoundException(error.message);
@@ -61,7 +63,17 @@ export class ProjectService {
         }
     }
 
-    async deleteProject(/* id: string, requestUserId: string */): Promise<void> {
-        //TODO
+    async deleteProject(id: string, requestUserId: string): Promise<void> {
+        try {
+            return this.deleteInteractor.execute(id, requestUserId);
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw new NotFoundException(error.message);
+            }
+            if (error instanceof ForbiddenException) {
+                throw new ForbiddenException(error.message);
+            }
+            throw new InternalServerErrorException();
+        }
     }
 }

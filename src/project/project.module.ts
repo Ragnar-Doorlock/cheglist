@@ -12,9 +12,18 @@ import { SearchProjectsInteractor } from "./search-projects/search-projects.inte
 import { SearchProjectsResponseBuilder } from "./search-projects/search-projects.repsonse-builder";
 import { UpdateProjectInteractor } from "./update-project/update-project.interactor";
 import { UpdateProjectResponseBuilder } from "./update-project/update-project.response-builder";
+import { DeleteProjectInteractor } from "./delete-project/delete-project.interactor";
+import { ChecklistGatewayModule } from "src/checklist/checklist.gateway-module";
+import { RunGatewayModule } from "src/run/run.gateway-module";
 
 @Module({
-    imports: [ConfigModule, AuthModule, ProjectGatewayModule],
+    imports: [
+        ConfigModule,
+        AuthModule,
+        ProjectGatewayModule,
+        ChecklistGatewayModule,
+        RunGatewayModule,
+    ],
     controllers: [ProjectController],
     providers: [
         ProjectService,
@@ -26,6 +35,7 @@ import { UpdateProjectResponseBuilder } from "./update-project/update-project.re
         SearchProjectsResponseBuilder,
         UpdateProjectInteractor,
         UpdateProjectResponseBuilder,
+        DeleteProjectInteractor,
     ],
 })
 export class ProjectModule {}

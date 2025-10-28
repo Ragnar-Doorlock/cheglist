@@ -5,6 +5,7 @@ import { ObjectId } from 'mongodb';
 export class Checklist {
     private id: string;
     private projectId: string;
+    // private order: number; TODO maybe will be needed
     private name: string;
     private tag?: string;
     private items: ChecklistItem[];
@@ -25,7 +26,7 @@ export class Checklist {
         return this.id;
     }
 
-    getProjectId():string {
+    getProjectId(): string {
         return this.projectId;
     }
 

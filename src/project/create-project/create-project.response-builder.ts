@@ -1,12 +1,13 @@
 import { Injectable } from "@nestjs/common";
-import { Project } from "src/entities/project/project";
+import { ProjectData } from "src/entities/project/project.type";
 
 @Injectable()
 export class CreateProjectResponseBuilder {
-    async build(project: Project) {
+    async build(project: ProjectData) {
         return {
-            name: project.getName(),
-            ownerId: project.getOwnerId(),
+            id: project.id,
+            name: project.name,
+            ownerId: project.ownerId,
         };
     }
 }

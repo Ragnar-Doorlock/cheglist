@@ -31,6 +31,7 @@ export class ChecklistItemService {
         }
     }
 
+    //TODO: may be add to add/update sync logic?
     async updateItem(
         checklistId: string,
         itemId: string,

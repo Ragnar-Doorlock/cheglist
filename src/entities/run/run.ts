@@ -1,21 +1,31 @@
-import { RunData } from './run.type';
-import { RunItemResult } from '../run-item-result/run-item-result';
+import { NewRunData, RunData } from './run.type';
+import { RunItem } from '../run-item-result/run-item';
+import { runStatus, RunStatus } from 'src/run/runStatus';
+import { ObjectId} from 'mongodb';
 
 export class Run {
     private id: string;
     private checklistId: string;
-    private testerId: string;
-    private status: 'in_progress' | 'completed'; // TODO: use enum
-    private results: RunItemResult[];
+    private order: number;
+    private tester?: string;
+    private status: RunStatus;
+    private runItems: RunItem[];
     private startedAt: Date;
+    private createdAt: Date;
+    private updatedAt: Date;
+    private build?: string;
 
-    constructor(data: RunData) {
-        this.id = data.id;
+    constructor(data: RunData | NewRunData) {
+        this.id = (data as RunData).id ?? new ObjectId().toString();
         this.checklistId = data.checklistId;
-        this.testerId = data.testerId;
-        this.status = data.status ?? 'in_progress';
-        this.results = data.results?.map(result => new RunItemResult(result)) ?? [];
+        this.order = data.order;
+        this.tester = data.tester;
+        this.status = data.status ?? runStatus.IN_PROGRESS;
+        this.runItems = data.runItems?.map(runItem => new RunItem(runItem)) ?? [];
         this.startedAt = data.startedAt || new Date();
+        this.createdAt = data.createdAt || new Date();
+        this.updatedAt = data.updatedAt || new Date();
+        this.build = data.build;
     }
 
     getId(): string {
@@ -26,23 +36,39 @@ export class Run {
         return this.checklistId;
     }
 
-    getTesterId(): string {
-        return this.testerId;
+    getOrder(): number {
+        return this.order;
     }
 
-    getStatus(): string {
+    getTester(): string | undefined {
+        return this.tester;
+    }
+
+    getStatus(): RunStatus {
         return this.status;
     }
 
-    getResults(): RunItemResult[] {
-        return this.results;
+    getRunItems(): RunItem[] {
+        return this.runItems;
+    }
+
+    getBuild(): string | undefined {
+        return this.build;
     }
 
     getStartedAt(): Date {
         return this.startedAt;
     }
 
-    public static create(data: RunData): Run {
+    getCreatedAt(): Date {
+        return this.createdAt;
+    }
+
+    getUpdatedAt(): Date {
+        return this.updatedAt;
+    }
+
+    public static create(data: RunData | NewRunData): Run {
         return new Run(data);
     }
 }

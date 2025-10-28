@@ -79,7 +79,7 @@ export class UpdateItemInteractor {
             movingItem,
             ...remainingItems.slice(targetOrder - 1),
         ];
-
+        
         const normalizedItems = reordered.map((item, index) => ({
             ...item,
             order: index + 1,

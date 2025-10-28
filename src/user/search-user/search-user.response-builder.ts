@@ -5,7 +5,7 @@ import { UserData } from "src/entities/user/user.type";
 export class SearchUserResponseBuilder {
     async build(users: UserData[]) {
         return users.map((x) => ({
-            id: x.id!, // '!' not sure but it may be a fix. If i search for user and he exists in db, he will have id
+            id: x.id,
             email: x.email,
         }))
     }

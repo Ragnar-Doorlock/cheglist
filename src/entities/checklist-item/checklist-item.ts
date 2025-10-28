@@ -12,8 +12,8 @@ export class ChecklistItem {
     constructor(data: ChecklistItemData | NewChecklistItemData) {
         this.id = (data as ChecklistItemData).id ?? new ObjectId().toString();
         this.title = data.title;
-        this.order = data.order;
-        this.tag = data.tag;
+        this.order = data.order; // TODO: what if 2 items grouped by tag -> need to change the order??
+        this.tag = data.tag;     // on front 2 items nearby should be grouped -> so allow grouping only items close to eachother??
         this.createdAt = data.createdAt || new Date();
         this.updatedAt = data.updatedAt || new Date();
     }

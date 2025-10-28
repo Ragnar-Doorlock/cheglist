@@ -1,11 +1,18 @@
-import { RunStatus } from "src/run/runStatus";
-import { RunItemResultData } from "../run-item-result/run-item-result.type";
+import { RunItemData } from '../run-item-result/run-item.type';
+import { RunStatus } from 'src/run/runStatus';
 
-export type RunData = {
-    id: string;
+export type NewRunData = {
     checklistId: string;
-    testerId: string;
+    order: number;
+    tester?: string;
     status: RunStatus;
-    results?: RunItemResultData[];
-    startedAt?: Date;
-}
+    runItems: RunItemData[];
+    build?: string;
+    startedAt: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
+};
+
+export type RunData = NewRunData & {
+    id: string;
+};

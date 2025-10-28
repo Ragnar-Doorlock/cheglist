@@ -11,7 +11,12 @@ import { ChecklistItemController } from "./checklist-item.controller";
 import { ProjectGatewayModule } from "src/project/project.gateway-module";
 
 @Module({
-    imports: [ConfigModule, AuthModule, ChecklistGatewayModule, ProjectGatewayModule],
+    imports: [
+        ConfigModule,
+        AuthModule,
+        ChecklistGatewayModule,
+        ProjectGatewayModule,
+    ],
     controllers: [ChecklistItemController],
     providers: [
         ChecklistItemService,
