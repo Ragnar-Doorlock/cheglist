@@ -1,6 +1,6 @@
 import { ChecklistItem } from "src/entities/checklist-item/checklist-item";
 
-export type UpdateItemResponseData = {
+export type DeleteItemResponseData = {
     id: string;
     name: string;
     projectId: string;

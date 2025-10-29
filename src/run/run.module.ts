@@ -14,7 +14,6 @@ import { CreateRunInteractor } from "./create-run/create-run.interactor";
 import { CreateRunResponseBuilder } from "./create-run/create-run.response-builder";
 import { UpdateRunInteractor } from "./update-run/update-run.interactor";
 import { UpdateRunResponseBuilder } from "./update-run/update-run.response-builder";
-import { SyncRunWithChecklistInteractor } from "./sync-run-with-checklist/sync-run-with-checklist.interactor";
 import { DeleteRunInteractor } from "./delete-run/delete-run.interactor";
 
 @Module({
@@ -36,7 +35,6 @@ import { DeleteRunInteractor } from "./delete-run/delete-run.interactor";
         CreateRunResponseBuilder,
         UpdateRunInteractor,
         UpdateRunResponseBuilder,
-        SyncRunWithChecklistInteractor,
         DeleteRunInteractor,
     ],
 })
