@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Param, Patch, Post } from "@nestjs/common";
 import { TokenDataDecorator } from "src/token-data.decorator";
 import type { TokenData } from "src/token-data.type";
 import { CreateChecklistItemDto } from "../checklist-item/dto/create-checklist-item.dto";
@@ -30,5 +30,13 @@ export class ChecklistItemController {
         return this.service.updateItem(checklistId, itemId, updateChecklistItemDto, requestUserId);
     }
 
-    //TODO Delete item
+    @Delete(':itemId')
+    delete(
+        @Param('checklistId') checklistId: string,
+        @Param('itemId') itemId: string,
+        @TokenDataDecorator() tokenData: TokenData,
+    ) {
+        const requestUserId = tokenData.id;
+        return this.service.deleteChecklistItem(checklistId, itemId, requestUserId);
+    }
 }

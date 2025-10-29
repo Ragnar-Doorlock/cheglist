@@ -28,14 +28,17 @@ export class UpdateRunItemInteractor {
         if (!run) {
             throw new NotFoundException('Run not found');
         }
+
         const checklist = await this.checklistRepository.findById(run.checklistId);
         if (!checklist) {
             throw new Error('Checklist was not found');
         }
+
         const project = await this.projectRepository.findById(checklist.projectId);
         if (!project) {
             throw new Error('Project was not found');
         }
+
         if (project.ownerId !== requestUserId) {
             throw new ForbiddenException('You do not have permission to edit this run');
         }
@@ -65,9 +68,15 @@ export class UpdateRunItemInteractor {
         const updatedItems = [...runItems];
         updatedItems[itemIndex] = updatedItem.toData();
 
+        const allCompleted = updatedItems.every(
+            i => i.status !== 'not_run' && i.status !== 'skipped'
+        );
+
         const updatedRun = Run.create({
             ...run,
             runItems: updatedItems,
+            status: allCompleted ? runStatus.COMPLETED : run.status,
+            updatedAt: new Date(),
         });
 
         await this.runRepository.save(updatedRun);
@@ -76,6 +85,7 @@ export class UpdateRunItemInteractor {
         if (!updatedRunFromDb) {
             throw new Error('Updated run not found');
         }
+
         return this.responseBuilder.build(updatedRunFromDb);
     }
 }

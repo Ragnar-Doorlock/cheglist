@@ -8,6 +8,10 @@ export class CreateChecklistDto {
     name: string;
 
     @IsString()
+    @IsOptional()
+    description?: string;
+
+    @IsString()
     @IsNotEmpty()
     projectId: string;
 

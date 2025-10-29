@@ -7,6 +7,7 @@ export function checklistSchemaToEntity(doc: ChecklistDocument): Checklist {
     const data: ChecklistData = {
         id: doc._id.toString(),
         name: doc.name,
+        description: doc.description,
         projectId: doc.projectId.toString(),
         tag: doc.tag,
         items: doc.items.map((item) => ({
@@ -29,6 +30,7 @@ export function checklistEntityToSchema(entity: Checklist): Record<string, unkno
         _id: entity.getId(),
         name: entity.getName(),
         projectId: entity.getProjectId(),
+        description: entity.getDescription(),
         tag: entity.getTag(),
         items: entity.getItems().map((item: ChecklistItem) => ({
             _id: item.getId(),
@@ -48,6 +50,7 @@ export function checklistSchemaToResponse(doc: ChecklistDocument): ChecklistData
         id: doc._id.toString(),
         name: doc.name,
         tag: doc.tag,
+        description: doc.description,
         projectId: doc.projectId.toString(),
         items: doc.items.map((item) => ({
             id: item._id.toString(),

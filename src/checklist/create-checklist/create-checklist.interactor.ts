@@ -26,6 +26,7 @@ export class CreateChecklistInteractor {
         const newChecklist = Checklist.create({
             name: checklistDto.name,
             projectId: checklistDto.projectId,
+            description: checklistDto.description,
             tag: checklistDto.tag,
         });
         await this.checklistRepository.save(newChecklist);

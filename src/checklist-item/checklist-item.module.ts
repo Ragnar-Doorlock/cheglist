@@ -9,6 +9,9 @@ import { ChecklistGatewayModule } from "src/checklist/checklist.gateway-module";
 import { ChecklistItemService } from "./checklist-item.service";
 import { ChecklistItemController } from "./checklist-item.controller";
 import { ProjectGatewayModule } from "src/project/project.gateway-module";
+import { RunGatewayModule } from "src/run/run.gateway-module";
+import { DeleteItemInteractor } from "./delete-item/delete-item.interactor";
+import { DeleteItemResponseBuilder } from "./delete-item/delete-item.response-builder";
 
 @Module({
     imports: [
@@ -16,6 +19,7 @@ import { ProjectGatewayModule } from "src/project/project.gateway-module";
         AuthModule,
         ChecklistGatewayModule,
         ProjectGatewayModule,
+        RunGatewayModule,
     ],
     controllers: [ChecklistItemController],
     providers: [
@@ -24,6 +28,8 @@ import { ProjectGatewayModule } from "src/project/project.gateway-module";
         AddItemResponseBuilder,
         UpdateItemInteractor,
         UpdateItemResponseBuilder,
+        DeleteItemInteractor,
+        DeleteItemResponseBuilder,
     ],
 })
 export class ChecklistItemModule {}

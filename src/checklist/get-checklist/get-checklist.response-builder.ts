@@ -8,6 +8,7 @@ export class GetChecklistResponseBuilder {
             name: checklist.name,
             projectId: checklist.projectId,
             items: checklist.items,
+            description: checklist.description,
             tag: checklist.tag,
         };
     }

@@ -8,7 +8,6 @@ import { CreateRunDto } from "./dto/create-run.dto";
 import { UpdateRunInteractor } from "./update-run/update-run.interactor";
 import { UpdateRunResponseData } from "./response-types/update-run.type";
 import { UpdateRunDto } from "./dto/update-run.dto";
-import { SyncRunWithChecklistInteractor } from "./sync-run-with-checklist/sync-run-with-checklist.interactor";
 import { DeleteRunInteractor } from "./delete-run/delete-run.interactor";
 
 @Injectable()
@@ -18,7 +17,6 @@ export class RunService {
         private searchInteractor: SearchRunsInteractor,
         private createInteractor: CreateRunInteractor,
         private updateInteractor: UpdateRunInteractor,
-        private syncInteractor: SyncRunWithChecklistInteractor,
         private deleteInteractor: DeleteRunInteractor,
     ) {}
 
@@ -86,17 +84,6 @@ export class RunService {
             }
             if (error instanceof ForbiddenException) {
                 throw new ForbiddenException(error.message);
-            }
-            throw new InternalServerErrorException();
-        }
-    }
-
-    async syncAllRunsWithChecklist(id: string) {
-        try {
-            await this.syncInteractor.execute(id);
-        } catch (error) {
-            if (error instanceof NotFoundException) {
-                throw new NotFoundException(error.message);
             }
             throw new InternalServerErrorException();
         }

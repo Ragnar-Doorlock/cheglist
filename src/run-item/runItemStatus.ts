@@ -2,7 +2,7 @@ export const runItemStatus = {
     PASSED: 'passed',
     FAILED: 'failed',
     BLOCKED: 'blocked',
-    SKIPPED: 'skipper',
+    SKIPPED: 'skipped',
     NOT_RUN: 'not_run',
 } as const;
 

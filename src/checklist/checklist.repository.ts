@@ -67,6 +67,7 @@ export class ChecklistRepository {
                         name: data.name,
                         tag: data.tag,
                         projectId: data.projectId,
+                        description: data.description,
                         items: data.items,
                         updatedAt: new Date(),
                     },

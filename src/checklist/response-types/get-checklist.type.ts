@@ -4,5 +4,6 @@ export type GetChecklistResponseData = {
     name: string;
     projectId: string;
     items?: ChecklistItemData[];
+    description?: string;
     tag?: string;
 }

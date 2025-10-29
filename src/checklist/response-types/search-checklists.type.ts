@@ -5,5 +5,6 @@ export type SearchChecklistsResponseData = {
     name: string;
     projectId: string;
     tag?: string;
+    description?: string;
     items?: ChecklistItemData[];
 }
