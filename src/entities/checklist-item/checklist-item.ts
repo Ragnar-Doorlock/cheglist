@@ -1,37 +1,64 @@
 import { ObjectId } from 'mongodb';
-import { ChecklistItemData, NewChecklistItemData } from './checklist-item.type';
+import {
+    ChecklistItemData,
+    NewChecklistItemData,
+} from './checklist-item.type';
+import { ChecklistItemView } from './checklist-item-view';
+import { checklistItemView } from './checklist-item-view';
 
 export class ChecklistItem {
     private id: string;
-    private title: string;
+    private type: ChecklistItemView;
     private order: number;
-    private tag?: string;
+    private title: string;
+    private items?: ChecklistItem[];
     private createdAt: Date;
     private updatedAt: Date;
 
     constructor(data: ChecklistItemData | NewChecklistItemData) {
         this.id = (data as ChecklistItemData).id ?? new ObjectId().toString();
+        this.type = data.type;
+        this.order = data.order;
         this.title = data.title;
-        this.order = data.order; // TODO: what if 2 items grouped by tag -> need to change the order??
-        this.tag = data.tag;     // on front 2 items nearby should be grouped -> so allow grouping only items close to eachother??
-        this.createdAt = data.createdAt || new Date();
-        this.updatedAt = data.updatedAt || new Date();
+
+        if (data.type === 'group') {
+            this.items = data.items?.map(item => new ChecklistItem(item)) ?? [];
+        }
+
+        this.createdAt = data.createdAt ?? new Date();
+        this.updatedAt = data.updatedAt ?? new Date();
+    }
+
+    isGroup(): boolean {
+        return this.type === 'group';
+    }
+
+    isCheck(): boolean {
+        return this.type === 'plain';
     }
 
     getId(): string {
         return this.id;
     }
 
-    getTitle(): string {
-        return this.title;
+    getType(): ChecklistItemView {
+        return this.type;
     }
 
     getOrder(): number {
         return this.order;
     }
 
-    getTag(): string | undefined {
-        return this.tag;
+    getTitle(): string {
+        return this.title;
+    }
+
+    getItems(): ChecklistItem[] {
+        if (this.type !== 'group') {
+            throw new Error('ChecklistItem is not a group');
+        }
+
+        return this.items ?? [];
     }
 
     getCreatedAt(): Date {
@@ -43,11 +70,27 @@ export class ChecklistItem {
     }
 
     toData(): ChecklistItemData {
+        if (this.type === checklistItemView.GROUP) {
+            if (!this.items) {
+                throw new Error('ChecklistItemGroup must contain items');
+            }
+
+            return {
+                id: this.id,
+                type: 'group',
+                title: this.title,
+                order: this.order,
+                items: this.items.map(item => item.toData()),
+                createdAt: this.createdAt,
+                updatedAt: this.updatedAt,
+            };
+        }
+
         return {
             id: this.id,
+            type: 'plain',
             title: this.title,
             order: this.order,
-            tag: this.tag,
             createdAt: this.createdAt,
             updatedAt: this.updatedAt,
         };

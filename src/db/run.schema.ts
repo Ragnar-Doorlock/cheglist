@@ -1,5 +1,5 @@
 import { Schema, Document, Types } from 'mongoose';
-import { RunItemStatus, runItemStatus } from 'src/run-item/runItemStatus';
+import { RunItemStatus, runItemStatus } from 'src/run-item/run-item-status';
 
 export interface RunItemSchema {
     _id: Types.ObjectId;

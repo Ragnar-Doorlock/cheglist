@@ -1,16 +1,22 @@
-import { Schema, Document, Types } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Types } from 'mongoose';
 
-export interface ProjectDocument extends Document {
+@Schema({ _id: false, timestamps: true })
+export class ProjectDocument {
+    @Prop({ type: Types.ObjectId, required: true })
     _id: Types.ObjectId;
+
+    @Prop({ type: String, required: true })
     name: string;
-    ownerId: string;
+
+    @Prop({ type: Types.ObjectId, required: true, ref: 'User' })
+    ownerId: Types.ObjectId;
+
+    @Prop({ type: Date })
     createdAt: Date;
+
+    @Prop({ type: Date })
     updatedAt: Date;
 }
 
-export const ProjectSchema = new Schema<ProjectDocument>({
-    name: { type: String, required: true },
-    ownerId: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now },
-});
+export const ProjectSchema = SchemaFactory.createForClass(ProjectDocument);
