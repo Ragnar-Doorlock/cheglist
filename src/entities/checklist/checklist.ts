@@ -5,7 +5,7 @@ import { ObjectId } from 'mongodb';
 export class Checklist {
     private id: string;
     private projectId: string;
-    // private order: number; TODO maybe will be needed
+    private order?: number; // TODO: depends on Tag, if tag exists increase order in tag group ??????????????????? may be not ? in 'order?'
     private description?: string;
     private name: string;
     private tag?: string;
@@ -20,6 +20,7 @@ export class Checklist {
         this.description = data.description;
         this.items = data.items?.map(item => new ChecklistItem(item)) ?? [];
         this.tag = data.tag;
+        this.order = data.order;
         this.createdAt = data.createdAt || new Date();
         this.updatedAt = data.updatedAt || new Date();
     }
@@ -42,6 +43,18 @@ export class Checklist {
 
     getItems(): ChecklistItem[] {
         return this.items;
+    }
+
+    getOrder(): number | undefined {
+        return this.order;
+    }
+
+    setOrder(order: number) {
+        if (order < 1) {
+            throw new Error('Checklist order must be >= 1');
+        }
+        this.order = order;
+        this.updatedAt = new Date();
     }
 
     getTag(): string | undefined {
